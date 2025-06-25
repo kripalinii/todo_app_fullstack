@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App - Login & Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main container for login/register forms -->
+    <div class="auth-container">
+        <!-- Header section -->
+        <div class="auth-header">
+            <h1>📝 Todo App</h1>
+            <p>Organize your tasks efficiently</p>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="auth-form active">
+            <h2>Login</h2>
+            <form id="loginFormElement">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <p class="auth-switch">
+                Don't have an account? 
+                <a href="#" id="showRegister">Register here</a>
+            </p>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerForm" class="auth-form">
+            <h2>Register</h2>
+            <form id="registerFormElement">
+                <div class="form-group">
+                    <label for="registerUsername">Username:</label>
+                    <input type="text" id="registerUsername" required minlength="3" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email:</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password:</label>
+                    <input type="password" id="registerPassword" required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+            <p class="auth-switch">
+                Already have an account? 
+                <a href="#" id="showLogin">Login here</a>
+            </p>
+        </div>
+
+        <!-- Error/Success message display -->
+        <div id="authMessage" class="message"></div>
+    </div>
+
+    <!-- JavaScript for authentication functionality -->
+    <script>
+        // DOM elements for form switching and handling
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const showRegisterLink = document.getElementById('showRegister');
+        const showLoginLink = document.getElementById('showLogin');
+        const authMessage = document.getElementById('authMessage');
+        const loginFormElement = document.getElementById('loginFormElement');
+        const registerFormElement = document.getElementById('registerFormElement');
+
+        // Switch to register form
+        showRegisterLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.remove('active');
+            registerForm.classList.add('active');
+            clearMessage();
+        });
+
+        // Switch to login form
+        showLoginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerForm.classList.remove('active');
+            loginForm.classList.add('active');
+            clearMessage();
+        });
+
+        // Handle login form submission
+        loginFormElement.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Store token and user info in localStorage
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    showMessage('Login successful! Redirecting...', 'success');
+                    
+                    // Redirect to dashboard after short delay
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 1500);
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showMessage('Network error. Please try again.', 'error');
+            }
+        });
+
+        // Handle register form submission
+        registerFormElement.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showMessage('Registration successful! Please login.', 'success');
+                    
+                    // Switch to login form after successful registration
+                    setTimeout(() => {
+                        registerForm.classList.remove('active');
+                        loginForm.classList.add('active');
+                        registerFormElement.reset();
+                    }, 2000);
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showMessage('Network error. Please try again.', 'error');
+            }
+        });
+
+        // Display message to user
+        function showMessage(message, type) {
+            authMessage.textContent = message;
+            authMessage.className = `message ${type}`;
+            authMessage.style.display = 'block';
+        }
+
+        // Clear displayed message
+        function clearMessage() {
+            authMessage.style.display = 'none';
+            authMessage.textContent = '';
+            authMessage.className = 'message';
+        }
+
+        // Check if user is already logged in
+        function checkAuthStatus() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                // Redirect to dashboard if already logged in
+                window.location.href = '/dashboard';
+            }
+        }
+
+        // Check authentication status when page loads
+        checkAuthStatus();
+
+        /*
+        IMPORTANT VARIABLES:
+        - loginForm, registerForm: DOM elements for form containers
+        - showRegisterLink, showLoginLink: Links to switch between forms
+        - authMessage: Element to display success/error messages
+        - loginFormElement, registerFormElement: Form elements for event handling
+
+        MAJOR FUNCTIONS:
+        - showRegisterLink.addEventListener(): Switches to registration form
+        - showLoginLink.addEventListener(): Switches to login form
+        - loginFormElement.addEventListener(): Handles login form submission
+        - registerFormElement.addEventListener(): Handles registration form submission
+        - showMessage(): Displays success or error messages to user
+        - clearMessage(): Hides and clears message display
+        - checkAuthStatus(): Checks if user is already authenticated
+        - fetch(): Makes HTTP requests to backend API endpoints
+        - localStorage.setItem(): Stores authentication token locally
+        - window.location.href: Redirects user to different pages
+        */
+    </script>
+</body>
+</html>

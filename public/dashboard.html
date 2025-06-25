@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main dashboard container -->
+    <div class="dashboard-container">
+        <!-- Header with user info and controls -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>📝 My Todo Dashboard</h1>
+                <span id="userWelcome">Welcome back!</span>
+            </div>
+            <div class="header-right">
+                <button id="darkModeToggle" class="btn btn-secondary">🌙 Dark Mode</button>
+                <button id="logoutBtn" class="btn btn-danger">Logout</button>
+            </div>
+        </header>
+
+        <!-- Progress section -->
+        <section class="progress-section">
+            <div class="progress-card">
+                <h3>Today's Progress</h3>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <p id="progressText">0 out of 0 tasks completed today</p>
+            </div>
+        </section>
+
+        <!-- Task creation form -->
+        <section class="task-form-section">
+            <div class="task-form-card">
+                <h3>Add New Task</h3>
+                <form id="taskForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="taskTitle">Title:</label>
+                            <input type="text" id="taskTitle" required maxlength="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="taskCategory">Category:</label>
+                            <select id="taskCategory" required>
+                                <option value="Personal">Personal</option>
+                                <option value="Work">Work</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Health">Health</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="taskDescription">Description:</label>
+                            <textarea id="taskDescription" maxlength="500" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDueDate">Due Date:</label>
+                            <input type="datetime-local" id="taskDueDate" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Task</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Filters and sorting -->
+        <section class="filters-section">
+            <div class="filters-card">
+                <h3>Filter & Sort Tasks</h3>
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label for="filterCategory">Category:</label>
+                        <select id="filterCategory">
+                            <option value="all">All Categories</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Work">Work</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Health">Health</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterStatus">Status:</label>
+                        <select id="filterStatus">
+                            <option value="all">All Tasks</option>
+                            <option value="false">Pending</option>
+                            <option value="true">Completed</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="sortBy">Sort By:</label>
+                        <select id="sortBy">
+                            <option value="dueDate">Due Date</option>
+                            <option value="category">Category</option>
+                            <option value="created">Date Created</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tasks display section -->
+        <section class="tasks-section">
+            <div class="tasks-header">
+                <h3>Your Tasks</h3>
+                <span id="taskCount">0 tasks</span>
+            </div>
+            <div id="tasksContainer" class="tasks-container">
+                <!-- Tasks will be dynamically loaded here -->
+            </div>
+            <div id="noTasks" class="no-tasks" style="display: none;">
+                <p>No tasks found. Create your first task above!</p>
+            </div>
+        </section>
+
+        <!-- Message display -->
+        <div id="dashboardMessage" class="message"></div>
+    </div>
+
+    <!-- Task Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Task</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="editTaskForm">
+                <div class="form-group">
+                    <label for="editTaskTitle">Title:</label>
+                    <input type="text" id="editTaskTitle" required maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="editTaskDescription">Description:</label>
+                    <textarea id="editTaskDescription" maxlength="500" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editTaskCategory">Category:</label>
+                    <select id="editTaskCategory" required>
+                        <option value="Personal">Personal</option>
+                        <option value="Work">Work</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Health">Health</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editTaskDueDate">Due Date:</label>
+                    <input type="datetime-local" id="editTaskDueDate" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelEdit">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Include main JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
