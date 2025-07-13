@@ -23,13 +23,6 @@ A beginner-friendly full-stack web application built with vanilla HTML, CSS, Jav
 - Color-coded task status (overdue, due today, completed)
 - Modal-based task editing
 
-### Categories
-- Work
-- Personal
-- Shopping
-- Health
-- Other
-
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -46,7 +39,7 @@ A beginner-friendly full-stack web application built with vanilla HTML, CSS, Jav
 
 ## 📁 Project Structure
 
-\`\`\`
+```
 todo-app-fullstack/
 ├── server.js                 # Main server file
 ├── package.json             # Dependencies and scripts
@@ -67,7 +60,7 @@ todo-app-fullstack/
     ├── dashboard.html     # Main application page
     ├── style.css         # All application styles
     └── script.js         # Frontend JavaScript logic
-\`\`\`
+```
 
 ## 🚀 Getting Started
 
@@ -75,29 +68,8 @@ todo-app-fullstack/
 - Node.js (v14 or higher)
 - MongoDB (local installation or MongoDB Atlas)
 
-### Installation
-1. Clone or download the project files
-2. Install dependencies:
-   \`\`\`bash
-   npm install
-   \`\`\`
-3. Set up environment variables in `.env` file
-4. Start MongoDB service (if using local installation)
-5. Run the application:
-   \`\`\`bash
-   npm start
-   \`\`\`
-   Or for development with auto-restart:
-   \`\`\`bash
-   npm run dev
-   \`\`\`
 
-### Usage
-1. Open your browser and navigate to `http://localhost:3000`
-2. Register a new account or login with existing credentials
-3. Start creating and managing your tasks!
-
-## 🎯 Key Features Explained
+## Key Features Explained
 
 ### Progress Tracking
 - Shows daily task completion progress
@@ -120,7 +92,7 @@ todo-app-fullstack/
 - Adaptive layouts for different screen sizes
 - Touch-friendly buttons and interactions
 
-## 🔒 Security Features
+## Security Features
 
 - Password hashing with salt
 - JWT token-based authentication
@@ -135,7 +107,7 @@ todo-app-fullstack/
 - Safari
 - Edge
 
-## 🎓 Learning Objectives
+## Learning Objectives
 
 This project demonstrates:
 - Full-stack web development principles
@@ -147,15 +119,3 @@ This project demonstrates:
 - Modern JavaScript (ES6+)
 - MVC architecture pattern
 
-## 🤝 Contributing
-
-This is a beginner-friendly project perfect for learning and portfolio use. Feel free to:
-- Add new features
-- Improve the UI/UX
-- Optimize performance
-- Add more task categories
-- Implement additional filters
-
----
-
-*Built with ❤️ for learning and portfolio purposes*
